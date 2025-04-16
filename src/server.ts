@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import app from './app';
 import mongoose from 'mongoose';
-
-
 import { Server } from 'http';
 import config from './app/config';
 
@@ -18,7 +16,6 @@ async function main() {
     console.log(error);
   }
 }
-
 main();
 
 process.on('unhandledRejection', () => {
