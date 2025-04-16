@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import router from './app/Routes';
 
 const app: Application = express();
 
@@ -14,6 +15,8 @@ app.use(
     credentials: true,
   }),
 );
+
+app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('😍 FINIDING BASA FOR YOU...!');
