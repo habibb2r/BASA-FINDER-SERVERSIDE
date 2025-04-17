@@ -2,8 +2,9 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import { AuthServices } from './auth.service';
 import { Request, Response } from 'express';
-import sendResponse from '../../utils/sendResponse';
+
 import config from '../../config';
+import sendResponse from '../../utils/sendResponse';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
   const getData = req.body;

@@ -2,12 +2,15 @@ import { Document } from 'mongoose';
 
 export interface TCreateUser extends Document {
   name: string;
+  phone?: string;
+  address?: string;
   email: string;
   password: string;
-  role: 'admin' | 'customer';
+  role: 'admin' | 'tenant' | 'landlord';
   isBlocked: boolean;
   isActive: boolean;
   photoURL: string;
+  isDeleted?: boolean;
 }
 
 export interface TUpdateUserStatus {

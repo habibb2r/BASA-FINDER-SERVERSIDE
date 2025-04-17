@@ -7,9 +7,11 @@ import { TLogin } from '../Auth/auth.interface';
 const createUserSchema = new Schema<TCreateUser, TLogin>(
   {
     name: { type: String, required: true, trim: true },
+    phone: { type: String, required: false, unique: true },
+    address: { type: String, required: false },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'customer'], required: true },
+    role: { type: String, enum: ['admin', 'landlord', 'tenant'], default: 'tenant', required: true },
     isBlocked: { type: Boolean, default: false, required: true },
     isActive: { type: Boolean, default: false, required: true },
     photoURL: { type: String, required: true },
