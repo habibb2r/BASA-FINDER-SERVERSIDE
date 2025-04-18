@@ -5,7 +5,6 @@ import { RentalRequestRoutes } from '../Modules/RentalRequest/rentalRequest.rout
 import { PaymentRoutes } from '../Modules/Payment/payment.routes';
 import UserRouter from '../Modules/User/user.route';
 
-
 const router = Router();
 
 const moduleRoutes = [
@@ -15,16 +14,15 @@ const moduleRoutes = [
   },
   {
     path: '/landlords',
-    route: RentalHouseRoutes, 
+    route: RentalHouseRoutes,
   },
   {
-   
     path: '/rental-request',
     route: RentalRequestRoutes,
   },
   {
     path: '/payment',
-    route: PaymentRoutes, 
+    route: PaymentRoutes,
   },
   {
     path: '/user',

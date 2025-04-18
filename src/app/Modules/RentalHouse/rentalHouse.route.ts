@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   '/listings',
-  verifyLandlord,
+  auth(USER_ROLE.landlord, USER_ROLE.admin),
   RentalHouseControllers.createRentalHouse,
 );
 
@@ -18,7 +18,7 @@ router.get('/listings/:id', RentalHouseControllers.getSingleRentalHouse);
 
 router.get(
   '/landlord/listings',
-  verifyLandlord,
+  auth(USER_ROLE.landlord, USER_ROLE.admin),
   RentalHouseControllers.getRentalHousesByLandlord,
 );
 

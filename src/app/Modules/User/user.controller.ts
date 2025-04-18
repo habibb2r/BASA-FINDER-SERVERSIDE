@@ -15,8 +15,9 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
-  const userEmail = req.params.email;
-  const result = await UserServices.getSingleUserFromDB(userEmail);
+  const userId = req.params.id;
+  console.log(userId);
+  const result = await UserServices.getSingleUserFromDB(userId);
   sendResponse(res, {
     success: true,
     message: 'User Retrieved successfully',

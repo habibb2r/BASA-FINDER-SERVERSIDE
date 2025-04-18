@@ -14,7 +14,7 @@ const createUserSchema = new Schema<TCreateUser, TLogin>(
     role: { type: String, enum: ['admin', 'landlord', 'tenant'], default: 'tenant', required: true },
     isBlocked: { type: Boolean, default: false, required: true },
     isActive: { type: Boolean, default: false, required: true },
-    photoURL: { type: String, required: true },
+    photoURL: { type: String, required: false },
   },
   {
     timestamps: true,

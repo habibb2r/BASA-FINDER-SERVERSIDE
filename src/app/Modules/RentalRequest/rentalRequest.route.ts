@@ -23,7 +23,7 @@ router.get(
 
 router.get(
   '/landlord/requests',
-  verifyLandlord,
+  auth(USER_ROLE.landlord, USER_ROLE.admin),
   RentalRequestControllers.getLandlordRentalRequests,
 );
 

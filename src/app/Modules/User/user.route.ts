@@ -2,15 +2,13 @@ import { Router } from 'express';
 import { UserController } from './user.controller';
 import verifyAdmin from '../../middlewares/verifyAdmin';
 import verifyUser from '../../middlewares/verifyUser';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from './user.constant';
 
 const UserRouter = Router();
 
 UserRouter.get('/all', verifyAdmin, UserController.getAllUsers);
-UserRouter.get(
-  '/userInfo/:email',
-  verifyUser,
-  UserController.getSingleUser,
-);
+
 UserRouter.patch('/update', verifyAdmin, UserController.updateUserStatus);
 UserRouter.patch(
   '/update/user',
@@ -21,6 +19,12 @@ UserRouter.patch(
   '/update/password',
   verifyUser,
   UserController.updateUserPassword,
+);
+
+UserRouter.get(
+  'my-profile/:id',
+  auth(USER_ROLE.landlord, USER_ROLE.admin, USER_ROLE.tenant),
+  UserController.getSingleUser,
 );
 
 export default UserRouter;

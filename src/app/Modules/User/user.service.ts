@@ -12,8 +12,8 @@ const getAllUserFromDB = async () => {
   return users;
 };
 
-const getSingleUserFromDB = async (email: string) => {
-  const result = await createUserModel.findOne({ email });
+const getSingleUserFromDB = async (userId: string) => {
+  const result = await createUserModel.findOne({ userId });
   return result;
 };
 
