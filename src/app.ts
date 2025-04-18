@@ -2,6 +2,8 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import router from './app/Routes';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import { routeNotFoundHandler } from './app/middlewares/routeNotFound';
 
 const app: Application = express();
 
@@ -22,4 +24,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('😍 FINIDING BASA FOR YOU...!');
 });
 
+
+app.use(globalErrorHandler);
+app.use('*', routeNotFoundHandler);
 export default app;

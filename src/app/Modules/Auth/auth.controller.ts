@@ -12,7 +12,6 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     ...getData,
     isBlocked: false,
     isActive: true,
-    role: 'customer',
     photoURL: getData?.photoURL || '',
   };
 

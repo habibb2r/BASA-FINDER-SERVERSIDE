@@ -16,5 +16,5 @@ export type TLoginUser = {
 };
 export interface TJwtPayload {
   email: string;
-  role: 'admin' | 'customer';
+  role: 'admin' | 'tenant' | 'landlord';
 }
