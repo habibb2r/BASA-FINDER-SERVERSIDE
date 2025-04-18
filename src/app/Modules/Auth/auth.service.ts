@@ -3,6 +3,8 @@ import { TCreateUser } from '../User/user.interface';
 import { createUserModel } from '../User/user.model';
 import { TJwtPayload, TLoginUser } from './auth.interface';
 import { generateToken } from './auth.utils';
+import AppError from '../../ErrorHandlers/AppError';
+import httpStatus from 'http-status';
 
 const createUserIntoDB = async (userData: TCreateUser) => {
   const res = await createUserModel.create(userData);
@@ -13,12 +15,22 @@ const loginService = async (payload: TLoginUser) => {
   const user = await createUserModel.findOne({ email: payload?.email });
 
   if (!user) {
-    throw new Error('User not found');
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const isPasswordMatched = await createUserModel.isPasswordMatched(
+    payload.password,
+    user.password,
+  );
+
+  if (!isPasswordMatched) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid credentials');
   }
 
   const jwtPayload: TJwtPayload = {
-    email: user?.email,
-    role: user?.role,
+    email: user.email,
+    role: user.role,
+    id: user._id.toString(),
   };
 
   const accessToken = generateToken(
@@ -32,6 +44,7 @@ const loginService = async (payload: TLoginUser) => {
     config.jwt_refresh_secret as string,
     config.jwt_refresh_expires_in as string,
   );
+
   return {
     accessToken,
     refreshToken,

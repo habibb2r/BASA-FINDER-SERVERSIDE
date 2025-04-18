@@ -9,9 +9,10 @@ import '../types/express';
 import { USER_ROLE } from '../Modules/User/user.constant';
 import { CustomRequest } from '../types/express';
 
-const verifyAdmin = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
+
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
     }
@@ -22,6 +23,7 @@ const verifyAdmin = catchAsync(
     ) as CustomRequest['user'];
 
     const { role, email } = decoded;
+
     const user = await createUserModel.isUserExistsByCustomId(email);
 
     if (!user) {
@@ -36,16 +38,13 @@ const verifyAdmin = catchAsync(
       throw new AppError(httpStatus.FORBIDDEN, 'Your account is not active!');
     }
 
-    if (role !== USER_ROLE.admin) {
-      throw new AppError(
-        httpStatus.FORBIDDEN,
-        'Access denied. Admin access only!',
-      );
+    if (requiredRoles.length && !requiredRoles.includes(role)) {
+      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
     }
 
     req.user = decoded;
     next();
-  },
-);
+  });
+};
 
-export default verifyAdmin;
+export default auth;

@@ -29,7 +29,5 @@ export interface RentalRequestModel extends Model<TRentalRequest> {
     findRequestsByTenant(tenantId: string): Promise<TRentalRequest[]>;
     findRequestsByRentalHouse(rentalHouseId: string): Promise<TRentalRequest[]>;
     findRequestsForLandlord(landlordId: string): Promise<TRentalRequest[]>;
-    /* eslint-disable no-unused-vars */
-    // isRequestExists(rentalHouseId: string, tenantId: string): Promise<boolean>;
     isRequestExists(rentalHouseId: string, tenantId: string, landlordId: string): Promise<boolean>;
 }

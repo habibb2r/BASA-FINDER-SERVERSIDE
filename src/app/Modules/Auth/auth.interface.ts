@@ -1,6 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
 import { TCreateUser } from '../User/user.interface';
+import { USER_ROLE } from '../User/user.constant';
+
+type UserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 export interface TLogin extends Model<TCreateUser> {
   isPasswordMatched(
@@ -14,7 +16,9 @@ export type TLoginUser = {
   email: string;
   password: string;
 };
-export interface TJwtPayload {
+
+export type TJwtPayload = {
   email: string;
-  role: 'admin' | 'tenant' | 'landlord';
-}
+  role: UserRole;
+  id: string;
+};

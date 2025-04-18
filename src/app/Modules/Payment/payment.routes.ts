@@ -1,45 +1,20 @@
-// payment.routes.ts
+
 import express from 'express';
 import { PaymentController } from './payment.controller';
-import auth from '../../middlewares/auth';
-import { USER_ROLE } from '../User/user.constant';
+import verifyTenant from '../../middlewares/verifyTenant';
+import verifyUser from '../../middlewares/verifyUser';
+import verifyAdmin from '../../middlewares/verifyAdmin';
 
 const router = express.Router();
 
-// Create a new payment (only tenants can make payments)
-router.post(
-    '/create',
-    // '/payment',
-    auth(USER_ROLE.tenant),
-    PaymentController.createPayment
-);
+router.post('/create', verifyTenant, PaymentController.createPayment);
 
-// Verify payment callback
-router.get(
-    '/verify',
-    auth(USER_ROLE.tenant, USER_ROLE.landlord, USER_ROLE.admin),
-    PaymentController.verifyPayment
-);
+router.get('/verify', verifyUser, PaymentController.verifyPayment);
 
-// Get all payments (admin only)
-router.get(
-    '/',
-    auth(USER_ROLE.admin),
-    PaymentController.getPayments
-);
+router.get('/', verifyAdmin, PaymentController.getPayments);
 
-// Get my payments (all roles)
-router.get(
-    '/my-payments',
-    auth(USER_ROLE.tenant, USER_ROLE.landlord, USER_ROLE.admin),
-    PaymentController.getMyPayments
-);
+router.get('/my-payments', verifyUser, PaymentController.getMyPayments);
 
-// Calculate revenue (admin only)
-router.get(
-    '/revenue',
-    auth(USER_ROLE.admin),
-    PaymentController.calculateRevenue
-);
+router.get('/revenue', verifyAdmin, PaymentController.calculateRevenue);
 
 export const PaymentRoutes = router;

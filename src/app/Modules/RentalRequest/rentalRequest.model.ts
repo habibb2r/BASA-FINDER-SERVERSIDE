@@ -61,17 +61,7 @@ const rentalRequestSchema = new Schema<TRentalRequest, RentalRequestModel>(
     }
 );
 
-// // Static methods
-// rentalRequestSchema.statics.findRequestsByTenant = async function (tenantId: string) {
-//     return this.find({ tenantId });
-// };
-// rentalRequestSchema.statics.findRequestsByRentalHouse = async function (rentalHouseId: string) {
-//     return this.find({ rentalHouseId });
-// };
-// rentalRequestSchema.statics.findRequestsForLandlord = async function (landlordId: string) {
-//     // This implementation will be expanded in the service to join with rental houses
-//     return this.find({});
-// };
+
 
 // Middleware - Pre-find hook to exclude soft-deleted items
 rentalRequestSchema.pre('find', function (next) {
@@ -87,7 +77,7 @@ rentalRequestSchema.statics.isRequestExists = async function (rentalHouseId: str
         status: { $in: ['pending', 'approved'] },
         isDeleted: false
     });
-    return !!request; // Return true if a request exists, otherwise false
+    return !!request; 
 };
 
 
