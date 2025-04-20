@@ -1,3 +1,5 @@
+import httpStatus from 'http-status-codes';
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
@@ -6,6 +8,7 @@ import { createUserModel } from './user.model';
 import { TUpdateUserStatus } from './user.interface';
 import mongoose from 'mongoose';
 import config from '../../config';
+import { JwtPayload } from 'jsonwebtoken';
 
 const getAllUserFromDB = async () => {
   const users = await createUserModel.find();
@@ -48,31 +51,31 @@ const updateUserStatusInDB = async (payload: TUpdateUserStatus) => {
   }
 };
 
-const updateUserProfileInDB = async (payload: any) => {
-  if (!payload?.email) {
-    throw new AppError(StatusCodes.UNAUTHORIZED, 'User Not Found');
+const updateUserInDB = async (
+  userData: JwtPayload,
+  payload: { name?: string; email?: string; phone?: string; address?: string }
+) => {
+ 
+  const user = await createUserModel.isUserExistsByCustomId(userData.email);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found!");
   }
-  if (!payload?.name) {
-    throw new AppError(StatusCodes.NO_CONTENT, 'No Name Provided');
+
+  if (user.isBlocked) {
+    throw new AppError(httpStatus.FORBIDDEN, "This user is blocked!");
   }
-  try {
-    const data = await createUserModel.updateOne(
-      { email: payload?.email },
-      {
-        $set: {
-          name: payload?.name,
-        },
-      },
-    );
-    const result = data?.modifiedCount > 0 ? { name: payload?.name } : {};
-    return result;
-    // eslint-disable-next-line no-unused-vars
-  } catch (error) {
-    throw new AppError(
-      StatusCodes.BAD_REQUEST,
-      'Unable to update user profile',
-    );
-  }
+
+
+  if (payload.name) user.name = payload.name;
+  if (payload.email) user.email = payload.email;
+  if (payload.phone) user.phone = payload.phone;
+  if (payload.address) user.address = payload.address;
+
+
+  await user.save();
+
+  return user;
 };
 
 const updateUserPasswordInDB = async (payload: any) => {
@@ -128,6 +131,6 @@ export const UserServices = {
   getAllUserFromDB,
   getSingleUserFromDB,
   updateUserStatusInDB,
-  updateUserProfileInDB,
+  updateUserInDB,
   updateUserPasswordInDB,
 };

@@ -9,6 +9,11 @@ const UserRouter = Router();
 
 UserRouter.get('/all', verifyAdmin, UserController.getAllUsers);
 
+UserRouter.patch(
+  "/update-profile",
+  auth(USER_ROLE.landlord, USER_ROLE.admin, USER_ROLE.tenant),
+  UserController.updateUser
+);
 UserRouter.patch('/update', verifyAdmin, UserController.updateUserStatus);
 UserRouter.patch(
   '/update/user',

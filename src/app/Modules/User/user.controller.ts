@@ -36,17 +36,13 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
-  const getUserData = req.body;
-  const result = await UserServices.updateUserProfileInDB({
-    name: getUserData?.name,
-    email: getUserData?.email,
-  });
+const updateUserProfile = catchAsync(async (req, res) => {
+  const updatedUser = await UserServices.updateUserInDB(req.user!, req.body);
   sendResponse(res, {
-    success: true,
-    message: 'Updated User Profile Successfully',
-    data: result,
     statusCode: StatusCodes.OK,
+    success: true,
+    message: "User profile updated successfully!",
+    data: updatedUser,
   });
 });
 
