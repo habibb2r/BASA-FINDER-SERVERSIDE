@@ -11,7 +11,7 @@ import { CustomRequest } from '../types/express';
 
 const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-
+    console.log(req.headers)
     const token = req.headers.authorization;
 
 
@@ -41,7 +41,7 @@ const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
     }
 
     if (requiredRoles.length && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized!');
+      throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized! length');
     }
 
     req.user = decoded;

@@ -11,13 +11,13 @@ const router = express.Router();
 
 router.post(
   '/tenants/create',
-  verifyTenant,
+  auth(USER_ROLE.tenant),
   RentalRequestControllers.createRentalRequest,
 );
 
 router.get(
   '/tenants/requests',
-  verifyTenant,
+  auth(USER_ROLE.tenant),
   RentalRequestControllers.getTenantRentalRequests,
 );
 

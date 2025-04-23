@@ -29,7 +29,9 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthServices.loginService(req.body);
+  console.log(result, 'result');  
   const { accessToken, refreshToken } = result;
+  console.log('accessToken', accessToken);
   res.cookie('refreshToken', refreshToken, {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,

@@ -1,8 +1,5 @@
-import httpStatus from 'http-status-codes';
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcrypt';
 import AppError from '../../ErrorHandlers/AppError';
 import { createUserModel } from './user.model';
 import { TUpdateUserStatus } from './user.interface';
@@ -16,7 +13,7 @@ const getAllUserFromDB = async () => {
 };
 
 const getSingleUserFromDB = async (userId: string) => {
-  const result = await createUserModel.findOne({ userId });
+  const result = await createUserModel.findOne({ _id: userId });
   return result;
 };
 
@@ -53,32 +50,51 @@ const updateUserStatusInDB = async (payload: TUpdateUserStatus) => {
 
 const updateUserInDB = async (
   userData: JwtPayload,
-  payload: { name?: string; email?: string; phone?: string; address?: string }
+  payload: { name?: string; email?: string; phone?: string; address?: string },
 ) => {
- 
-  const user = await createUserModel.isUserExistsByCustomId(userData.email);
-
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not found!");
+  if (!userData?.email) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'User Not Found');
   }
 
-  if (user.isBlocked) {
-    throw new AppError(httpStatus.FORBIDDEN, "This user is blocked!");
+  try {
+    // Build update object dynamically
+    const updateFields: { [key: string]: string } = {};
+    if (payload.name) updateFields.name = payload.name;
+    if (payload.email) updateFields.email = payload.email;
+    if (payload.phone) updateFields.phone = payload.phone;
+    if (payload.address) updateFields.address = payload.address;
+
+    // If no fields to update
+    if (Object.keys(updateFields).length === 0) {
+      throw new AppError(StatusCodes.NO_CONTENT, 'No update fields provided');
+    }
+
+    const data = await createUserModel.updateOne(
+      { email: userData.email },
+      {
+        $set: updateFields,
+      },
+    );
+
+    // Return only updated fields
+    const result = data?.modifiedCount > 0 ? updateFields : {};
+    return result;
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      'Unable to update user profile',
+    );
   }
-
-
-  if (payload.name) user.name = payload.name;
-  if (payload.email) user.email = payload.email;
-  if (payload.phone) user.phone = payload.phone;
-  if (payload.address) user.address = payload.address;
-
-
-  await user.save();
-
-  return user;
 };
 
-const updateUserPasswordInDB = async (payload: any) => {
+interface IUpdatePasswordPayload {
+  email: string;
+  cpassword: string;
+  npassword: string;
+}
+
+const updateUserPasswordInDB = async (payload: IUpdatePasswordPayload) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 

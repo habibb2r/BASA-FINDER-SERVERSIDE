@@ -12,7 +12,7 @@ UserRouter.get('/all', verifyAdmin, UserController.getAllUsers);
 UserRouter.patch(
   "/update-profile",
   auth(USER_ROLE.landlord, USER_ROLE.admin, USER_ROLE.tenant),
-  UserController.updateUser
+  UserController.updateUserProfile
 );
 UserRouter.patch('/update', verifyAdmin, UserController.updateUserStatus);
 UserRouter.patch(
@@ -27,7 +27,7 @@ UserRouter.patch(
 );
 
 UserRouter.get(
-  'my-profile/:id',
+  '/my-profile/:id',
   auth(USER_ROLE.landlord, USER_ROLE.admin, USER_ROLE.tenant),
   UserController.getSingleUser,
 );

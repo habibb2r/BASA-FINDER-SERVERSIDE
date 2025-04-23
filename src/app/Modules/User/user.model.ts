@@ -1,8 +1,9 @@
 import { model, Schema } from 'mongoose';
 import { TCreateUser } from './user.interface';
 import bcrypt from 'bcrypt';
-import config from '../../config';
+
 import { TLogin } from '../Auth/auth.interface';
+import config from '../../config';
 
 const createUserSchema = new Schema<TCreateUser, TLogin>(
   {
@@ -42,7 +43,7 @@ createUserSchema.statics.isPasswordMatched = async function (
 createUserSchema.statics.isUserExistsByCustomId = async function (
   email: string,
 ) {
-  return await createUserModel.findOne({ email }).select('+password');
+  return await createUserModel.findOne({ email });
 };
 
 export const createUserModel = model<TCreateUser, TLogin>(

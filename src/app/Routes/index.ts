@@ -17,7 +17,7 @@ const moduleRoutes = [
     route: RentalHouseRoutes,
   },
   {
-    path: '/rental-request',
+    path: '/',
     route: RentalRequestRoutes,
   },
   {
