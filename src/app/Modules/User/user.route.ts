@@ -7,7 +7,7 @@ import { USER_ROLE } from './user.constant';
 
 const UserRouter = Router();
 
-UserRouter.get('/all', verifyAdmin, UserController.getAllUsers);
+UserRouter.get('/', auth(USER_ROLE.admin), UserController.getAllUsers);
 
 UserRouter.patch(
   "/update-profile",

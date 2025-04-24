@@ -22,14 +22,14 @@ router.get(
 );
 
 router.get(
-  '/landlord/requests',
+  '/rental-request/landlord/requests',
   auth(USER_ROLE.landlord, USER_ROLE.admin),
   RentalRequestControllers.getLandlordRentalRequests,
 );
 
 router.patch(
   '/requests/:requestId/status',
-  verifyLandlord,
+  auth(USER_ROLE.landlord),
   RentalRequestControllers.updateRentalRequestStatus,
 );
 
