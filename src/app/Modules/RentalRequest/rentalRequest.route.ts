@@ -3,9 +3,6 @@ import express from 'express';
 import { RentalRequestControllers } from './rentalRequest.controller';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../User/user.constant';
-import verifyTenant from '../../middlewares/verifyTenant';
-import verifyLandlord from '../../middlewares/verifyLandlord';
-import verifyUser from '../../middlewares/verifyUser';
 
 const router = express.Router();
 
@@ -35,19 +32,19 @@ router.patch(
 
 router.patch(
   '/:requestId/payment',
-  verifyTenant,
+  auth(USER_ROLE.tenant),
   RentalRequestControllers.updatePaymentStatus,
 );
 
 router.get(
   '/requests',
-  verifyLandlord,
+  auth(USER_ROLE.landlord),
   RentalRequestControllers.getAllRentalRequests,
 );
 
 router.get(
   '/requests/:id',
-  verifyUser,
+  auth(USER_ROLE.landlord, USER_ROLE.tenant, USER_ROLE.admin),
   RentalRequestControllers.getSingleRentalRequest,
 );
 

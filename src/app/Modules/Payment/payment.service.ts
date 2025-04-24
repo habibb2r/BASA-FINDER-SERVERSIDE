@@ -1,7 +1,7 @@
 // payment.service.ts
 import { RentalRequest } from '../RentalRequest/rentalRequest.model';
 import { RentalHouse } from '../RentalHouse/rentalHouse.model';
-import { TUser } from '../User/user.interface';
+import { TCreateUser } from '../User/user.interface';
 import { Payment } from './payment.model';
 import { paymentUtils } from './payment.utils';
 import AppError from '../../ErrorHandlers/AppError';
@@ -21,11 +21,11 @@ interface IPaymentPayload {
 }
 
 const createPaymentInDB = async (
-  user: TUser,
+  user: TCreateUser,
   payload: IPaymentPayload,
   client_ip: string,
 ) => {
-  console.log('Validating Payment Data:', payload);
+  // console.log('Validating Payment Data:', payload);
   // Validate request exists and is approved
   const request = await RentalRequest.findById(payload.requestId);
 
@@ -73,16 +73,19 @@ const createPaymentInDB = async (
     amount: listing.rentAmount,
     order_id: payment._id,
     currency: 'BDT',
-    customer_name: user.name,
+    customer_name: user.name || payload.name,
     customer_email: user.email,
     client_ip,
     customer_phone: payload.phone || 'N/A',
     customer_address: payload.address || 'N/A',
-    customer_city: user.city || 'N/A',
+    customer_city:  'N/A',
   };
+
+  // console.log('SurjoPay Payload:', surjopayPayload);
 
   // Make payment with SurjoPay
   const paymentResponse = await paymentUtils.makePayment(surjopayPayload);
+  // console.log(paymentResponse)
 
   if (paymentResponse?.transactionStatus) {
     await payment.updateOne({
@@ -93,7 +96,7 @@ const createPaymentInDB = async (
     });
   }
 
-  console.log('Payment URL:', paymentResponse.checkout_url);
+  // console.log('Payment URL:', paymentResponse.checkout_url);
 
   return paymentResponse.checkout_url;
 };
@@ -164,7 +167,7 @@ const getLandlordPaymentsFromDB = async (
 
 const verifyPayment = async (order_id: string) => {
   const verifiedPayment = await paymentUtils.verifyPaymentAsync(order_id);
-
+  // console.log('Verified Payment:', verifiedPayment);
   if (verifiedPayment.length) {
     const payment = await Payment.findOneAndUpdate(
       {
@@ -174,7 +177,7 @@ const verifyPayment = async (order_id: string) => {
         'transaction.bank_status': verifiedPayment[0].bank_status,
         'transaction.sp_code': verifiedPayment[0].sp_code,
         'transaction.sp_message': verifiedPayment[0].sp_message,
-        'transaction.transactionStatus': verifiedPayment[0].transaction_status,
+        'transaction.transactionStatus': verifiedPayment[0].bank_status,
         'transaction.method': verifiedPayment[0].method,
         'transaction.date_time': verifiedPayment[0].date_time,
         status:
@@ -207,7 +210,7 @@ const verifyPayment = async (order_id: string) => {
         const landlord = listing
           ? await createUserModel.findById(listing.landlordId)
           : null;
-        console.log(landlord);
+        // console.log(landlord);
         // Send notification to tenant
         // if (tenant) {
         //     await sendEmail(

@@ -11,7 +11,7 @@ import { CustomRequest } from '../types/express';
 
 const auth = (...requiredRoles: (keyof typeof USER_ROLE)[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.headers)
+    // console.log(req.headers)
     const token = req.headers.authorization;
 
 

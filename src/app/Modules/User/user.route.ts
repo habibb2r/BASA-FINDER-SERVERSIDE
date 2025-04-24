@@ -14,15 +14,15 @@ UserRouter.patch(
   auth(USER_ROLE.landlord, USER_ROLE.admin, USER_ROLE.tenant),
   UserController.updateUserProfile
 );
-UserRouter.patch('/update', verifyAdmin, UserController.updateUserStatus);
+UserRouter.patch('/update', auth(USER_ROLE.admin), UserController.updateUserStatus);
 UserRouter.patch(
   '/update/user',
-  verifyUser,
+  auth(USER_ROLE.admin, USER_ROLE.landlord, USER_ROLE.tenant),
   UserController.updateUserProfile,
 );
 UserRouter.patch(
   '/update/password',
-  verifyUser,
+  auth(USER_ROLE.admin, USER_ROLE.landlord, USER_ROLE.tenant),
   UserController.updateUserPassword,
 );
 
