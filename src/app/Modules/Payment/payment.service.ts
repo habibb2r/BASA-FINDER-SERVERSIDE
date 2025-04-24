@@ -210,7 +210,7 @@ const verifyPayment = async (order_id: string) => {
         const landlord = listing
           ? await createUserModel.findById(listing.landlordId)
           : null;
-        // console.log(landlord);
+        console.log(landlord);
         // Send notification to tenant
         // if (tenant) {
         //     await sendEmail(

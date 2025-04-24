@@ -1,6 +1,5 @@
 import express from 'express';
 import { RentalHouseControllers } from './rentalHouse.controller';
-import verifyLandlord from '../../middlewares/verifyLandlord';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../User/user.constant';
 

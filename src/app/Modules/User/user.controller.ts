@@ -16,7 +16,7 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const userId = req.params.id;
-  console.log(userId);
+  // console.log(userId);
   const result = await UserServices.getSingleUserFromDB(userId);
   sendResponse(res, {
     success: true,
@@ -36,13 +36,13 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateUserProfile = catchAsync(async (req, res) => {
+const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
   const updatedUser = await UserServices.updateUserInDB(req.user!, req.body);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: "User profile updated successfully!",
     data: updatedUser,
+    message: "User profile updated successfully!",
   });
 });
 
