@@ -187,3 +187,13 @@ The backend is **Vercel**-ready. Includes a `vercel.json` for configuration.
 ## 🪪 License
 
 **ISC License**
+
+## 👨‍💻 Developer
+
+**HABIBB2R**
+
+- GitHub: [@habibb2r](https://github.com/habibb2r)
+- LinkedIn: [@habibb2r](https://linkedin.com/in/habibb2r)
+- Portfolio: [habibb2r.site](https://habibb2r.site)
+
+---
