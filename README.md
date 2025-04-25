@@ -103,7 +103,7 @@ SP_RETURN_URL=your_return_url
 
 1. Clone the repository:
    \`\`\`bash
-   git clone <repository-url>
+   git clone https://github.com/habibb2r/BASA-FINDER-SERVERSIDE.git
    cd BASA-FINDER-SERVERSIDE
    \`\`\`
 
@@ -121,6 +121,11 @@ SP_RETURN_URL=your_return_url
    \`\`\`bash
    npm run start:dev
    \`\`\`
+
+## LIVE_LINK
+\`\`\`bash
+   https://basa-finder-serverside.vercel.app/
+\`\`\`
 
 ## API Routes
 
@@ -186,13 +191,6 @@ The application includes comprehensive error handling with:
 
 The application is configured for deployment on Vercel with the included vercel.json configuration.
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
 
 ## License
 
