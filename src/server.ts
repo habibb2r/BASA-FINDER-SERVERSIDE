@@ -5,7 +5,7 @@ import { Server } from 'http';
 import config from './app/config';
 
 let server: Server;
-console.log('DB',config.database_url)
+// console.log('DB',config.database_url)
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);

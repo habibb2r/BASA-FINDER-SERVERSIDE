@@ -8,6 +8,7 @@ import { Payment } from './payment.model';
 import { PaymentValidationSchema } from './payment.validation';
 import AppError from '../../ErrorHandlers/AppError';
 import '../../types/express';
+import { createUserModel } from '../User/user.model';
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
   const clientIp = req.ip || '';
@@ -15,11 +16,17 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
     throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
   }
 
+  // Get full user object from database
+  const user = await createUserModel.findOne({ email: req.user.email });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
   // Validate the request body
   const validatedData = PaymentValidationSchema.parse(req.body);
 
   const checkoutUrl = await PaymentService.createPaymentInDB(
-    req.user,
+    user,
     validatedData,
     clientIp,
   );

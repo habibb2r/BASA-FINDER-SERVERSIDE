@@ -17,8 +17,8 @@ const loginService = async (payload: TLoginUser) => {
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
-  console.log(payload.password, 'payload.password');
-  console.log(user.password, 'user.password');
+  // console.log(payload.password, 'payload.password');
+  // console.log(user.password, 'user.password');
   const isPasswordMatched = await createUserModel.isPasswordMatched(
     payload.password,
     user.password,

@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import AppError from '../../ErrorHandlers/AppError';
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserServices.getAllUserFromDB();
@@ -37,12 +38,15 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
-  const updatedUser = await UserServices.updateUserInDB(req.user!, req.body);
+  if (!req.user) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'User not authenticated');
+  }
+  const updatedUser = await UserServices.updateUserInDB(req.user, req.body);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     data: updatedUser,
-    message: "User profile updated successfully!",
+    message: 'User profile updated successfully!',
   });
 });
 

@@ -82,8 +82,9 @@ paymentSchema.statics.calculateTotalRevenue = async function () {
     ]);
 
     return result[0]?.totalRevenue || 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: unknown) {
-    console.log("Error calculating revenue:", error);
+    // console.log("Error calculating revenue:", error);
     throw new Error('Error calculating revenue');
   }
 };

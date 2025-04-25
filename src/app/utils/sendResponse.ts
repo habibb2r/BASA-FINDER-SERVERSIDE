@@ -11,7 +11,7 @@ type TSendResponse<T> = {
   success?: boolean;
   statusCode: number;
   message: string;
-  data: T | T[] | null;
+  data: T | null;
   meta?: TMeta;
 };
 
