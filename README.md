@@ -1,85 +1,75 @@
-# BASA FINDER SERVERSIDE
+# 🏠 BASA FINDER SERVERSIDE
 
-A robust backend service for a rental property management system built with Node.js, Express, TypeScript, and MongoDB.
+A robust backend service for a rental property management system built with **Node.js**, **Express**, **TypeScript**, and **MongoDB**.
 
-## Features
+---
 
-### Authentication & Authorization
+## 🚀 Features
 
+### 🔐 Authentication & Authorization
 - User registration and login with JWT authentication
 - Role-based access control (Admin, Landlord, Tenant)
-- Password encryption using bcrypt
+- Password encryption using `bcrypt`
 - Token-based authentication with refresh tokens
 
-### User Management
-
+### 👥 User Management
 - Profile management (name, email, phone, address)
-- User role management
+- Role and status (active/blocked) management
 - Password update functionality
-- User status management (active/blocked)
 
-### Rental House Management
-
+### 🏘️ Rental House Management
 - Create, update, and delete rental listings
-- Search and filter rental properties
-- Image upload support
+- Image upload with Cloudinary
+- Search, filter, and track availability
 - Amenities management
-- Availability status tracking
 
-### Rental Request System
+### 📥 Rental Request System
+- Send rental requests
+- Manage request statuses (pending, approved, rejected)
+- Filtering, sorting, and soft deletion of requests
 
-- Create rental requests
-- Request status management (pending/approved/rejected)
-- Request filtering and sorting
-- Soft delete functionality
+### 💳 Payment Integration
+- Secure payment processing via **ShurjoPay**
+- Track payment status and transaction history
+- Revenue calculation and payment verification
 
-### Payment Integration
+### 🧰 Additional Features
+- Custom `AppError` and global error handling
+- Schema validation using **Zod**
+- Advanced query building with pagination and filtering
+- Middleware support for CORS, cookie parsing, and rate limiting
 
-- Secure payment processing with ShurjoPay
-- Payment status tracking
-- Transaction history
-- Revenue calculation
-- Payment verification system
+---
 
-### Additional Features
+## 🧱 Technology Stack
 
-- Error handling with custom AppError
-- Request validation using Zod
-- Query building with pagination and filtering
-- CORS support
-- Cookie parsing
-- Rate limiting
-- Global error handling
+- **Runtime**: Node.js  
+- **Language**: TypeScript  
+- **Framework**: Express.js  
+- **Database**: MongoDB (with Mongoose ODM)  
+- **Authentication**: JWT  
+- **Password Hashing**: bcrypt  
+- **Validation**: Zod  
+- **File Uploads**: multer, Cloudinary  
+- **Payment Gateway**: ShurjoPay  
+- **Utilities**: cors, cookie-parser, express-rate-limit  
 
-## Technology Stack
+---
 
-- **Runtime Environment**: Node.js
-- **Language**: TypeScript
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JWT (jsonwebtoken)
-- **Password Encryption**: bcrypt
-- **Validation**: Zod
-- **Payment Gateway**: ShurjoPay
-- **Other Tools**:
-  - cors
-  - cookie-parser
-  - express-rate-limit
-  - multer
-  - cloudinary
+## ⚙️ Prerequisites
 
-## Prerequisites
-
-- Node.js (v14 or higher)
+- Node.js v14+
 - MongoDB
 - npm or yarn
 - TypeScript
 
-## Environment Variables
+---
 
-Create a .env file in the root directory with the following variables:
+## 📁 Environment Variables
 
-\`\`\`env
+Create a `.env` file in the root directory:
+
+```env
 NODE_ENV=development
 PORT=5000
 DATABASE_URL=your_mongodb_connection_string
@@ -87,111 +77,113 @@ JWT_ACCESS_SECRET=your_jwt_access_secret
 JWT_REFRESH_SECRET=your_jwt_refresh_secret
 JWT_ACCESS_EXPIRES_IN=365d
 JWT_REFRESH_EXPIRES_IN=365d
-BCRYPT_SALT_ROUNDS= give salt round
-CORS_ORIGIN= your frontend url
+BCRYPT_SALT_ROUNDS=10
+CORS_ORIGIN=your_frontend_url
 
 # ShurjoPay Configuration
-
 SP_ENDPOINT=your_shurjopay_endpoint
 SP_USERNAME=your_shurjopay_username
 SP_PASSWORD=your_shurjopay_password
 SP_PREFIX=SP
 SP_RETURN_URL=your_return_url
-\`\`\`
+```
 
-## Installation
+---
 
-1. Clone the repository:
-   \`\`\`bash
-   git clone https://github.com/habibb2r/BASA-FINDER-SERVERSIDE.git
-   cd BASA-FINDER-SERVERSIDE
-   \`\`\`
+## 📦 Installation
 
-2. Install dependencies:
-   \`\`\`bash
-   npm install
-   \`\`\`
+```bash
+# Clone the repo
+git clone https://github.com/habibb2r/BASA-FINDER-SERVERSIDE.git
+cd BASA-FINDER-SERVERSIDE
 
-3. Build the project:
-   \`\`\`bash
-   npm run build
-   \`\`\`
+# Install dependencies
+npm install
 
-4. Start the development server:
-   \`\`\`bash
-   npm run start:dev
-   \`\`\`
+# Build the project
+npm run build
 
-## LIVE_LINK
-\`\`\`bash
-   https://basa-finder-serverside.vercel.app/
-\`\`\`
+# Start in development mode
+npm run start:dev
+```
 
-## API Routes
+---
 
-### Auth Routes
+## 🌐 Live Server
 
-- POST `/api/v1/auth/signup` - Register a new user
-- POST `/api/v1/auth/login` - User login
+```bash
+https://basa-finder-serverside.vercel.app/
+```
 
-### User Routes
+---
 
-- GET `/api/v1/user` - Get all users (Admin only)
-- PATCH `/api/v1/user/update-profile` - Update user profile
-- PATCH `/api/v1/user/update` - Update user status (Admin only)
-- PATCH `/api/v1/user/update/password` - Update user password
-- GET `/api/v1/user/my-profile/:id` - Get user profile
+## 📡 API Endpoints
 
-### Rental House Routes
+### Auth
+- `POST /api/v1/auth/signup` – Register user  
+- `POST /api/v1/auth/login` – Login user  
 
-- POST `/api/v1/landlords/listings` - Create rental listing
-- GET `/api/v1/landlords/listings` - Get all rental listings
-- GET `/api/v1/landlords/listings/:id` - Get single rental listing
-- DELETE `/api/v1/landlords/listings/:rentalHouseId` - Delete rental listing
-- PATCH `/api/v1/landlords/listings/:rentalHouseId` - Update rental listing
+### User
+- `GET /api/v1/user` – Get all users (Admin)  
+- `PATCH /api/v1/user/update-profile` – Update profile  
+- `PATCH /api/v1/user/update` – Update status (Admin)  
+- `PATCH /api/v1/user/update/password` – Change password  
+- `GET /api/v1/user/my-profile/:id` – Get specific profile  
 
-### Rental Request Routes
+### Rental Listings
+- `POST /api/v1/landlords/listings` – Create listing  
+- `GET /api/v1/landlords/listings` – Get all listings  
+- `GET /api/v1/landlords/listings/:id` – Get single listing  
+- `PATCH /api/v1/landlords/listings/:id` – Update listing  
+- `DELETE /api/v1/landlords/listings/:id` – Delete listing  
 
-- POST `/api/v1/tenants/create` - Create rental request
-- GET `/api/v1/tenants/requests` - Get tenant's rental requests
-- GET `/api/v1/rental-request/landlord/requests` - Get landlord's rental requests
-- PATCH `/api/v1/requests/:requestId/status` - Update request status
-- GET `/api/v1/requests` - Get all rental requests
-- DELETE `/api/v1/requests/:id` - Delete rental request
+### Rental Requests
+- `POST /api/v1/tenants/create` – Create rental request  
+- `GET /api/v1/tenants/requests` – Tenant's requests  
+- `GET /api/v1/rental-request/landlord/requests` – Landlord's requests  
+- `PATCH /api/v1/requests/:id/status` – Update status  
+- `GET /api/v1/requests` – All requests  
+- `DELETE /api/v1/requests/:id` – Delete request  
 
-### Payment Routes
+### Payment
+- `POST /api/v1/payment/create` – Initiate payment  
+- `GET /api/v1/payment/verify` – Verify payment  
+- `GET /api/v1/payment` – All payments (Admin)  
+- `GET /api/v1/payment/my-payments` – User payments  
+- `GET /api/v1/payment/revenue` – Total revenue (Admin)  
 
-- POST `/api/v1/payment/create` - Initialize payment
-- GET `/api/v1/payment/verify` - Verify payment
-- GET `/api/v1/payment` - Get all payments (Admin only)
-- GET `/api/v1/payment/my-payments` - Get user payments
-- GET `/api/v1/payment/revenue` - Calculate total revenue (Admin only)
+---
 
-## Scripts
+## 📜 Scripts
 
-- `npm run start:prod` - Start production server
-- `npm run start:dev` - Start development server with hot reload
-- `npm run build` - Build the project
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint errors
-- `npm run format` - Format code with Prettier
+| Script             | Description                      |
+|--------------------|----------------------------------|
+| `start:prod`       | Start production server          |
+| `start:dev`        | Start dev server with hot reload |
+| `build`            | Compile TypeScript               |
+| `lint`             | Run ESLint                       |
+| `lint:fix`         | Fix lint issues                  |
+| `format`           | Format code with Prettier        |
 
-## Error Handling
+---
 
-The application includes comprehensive error handling with:
+## ❗ Error Handling
 
-- Custom AppError class
-- Global error handler
-- Validation error handling
-- Cast error handling
-- Duplicate error handling
-- Generic error handling
+- Custom `AppError` class  
+- Centralized error handler  
+- Zod validation errors  
+- Mongoose-specific error handling  
+- Duplicate key errors  
+- Generic fallback handler  
 
-## Deployment
+---
 
-The application is configured for deployment on Vercel with the included vercel.json configuration.
+## 🚀 Deployment
 
+The backend is **Vercel**-ready. Includes a `vercel.json` for configuration.
 
-## License
+---
 
-ISC
+## 🪪 License
+
+**ISC License**
