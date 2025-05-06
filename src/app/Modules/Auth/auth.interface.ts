@@ -21,4 +21,5 @@ export type TJwtPayload = {
   email: string;
   role: UserRole;
   id: string;
+  photoURL: string;
 };
