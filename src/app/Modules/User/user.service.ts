@@ -50,7 +50,7 @@ const updateUserStatusInDB = async (payload: TUpdateUserStatus) => {
 
 const updateUserInDB = async (
   userData: JwtPayload,
-  payload: { name?: string; email?: string; phone?: string; address?: string },
+  payload: { name?: string; email?: string; phone?: string; address?: string, photoURL?: string },
 ) => {
   if (!userData?.email) {
     throw new AppError(StatusCodes.UNAUTHORIZED, 'User Not Found');
@@ -63,6 +63,7 @@ const updateUserInDB = async (
     if (payload.email) updateFields.email = payload.email;
     if (payload.phone) updateFields.phone = payload.phone;
     if (payload.address) updateFields.address = payload.address;
+    if (payload.photoURL) updateFields.photoURL = payload.photoURL;
 
     // If no fields to update
     if (Object.keys(updateFields).length === 0) {
